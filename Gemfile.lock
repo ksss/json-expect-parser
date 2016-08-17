@@ -1,0 +1,24 @@
+PATH
+  remote: .
+  specs:
+    json-expect-parser (0.0.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    json (2.0.2)
+    rake (10.5.0)
+    rgot (0.2.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler (~> 1.11)
+  json
+  json-expect-parser!
+  rake (~> 10.0)
+  rgot
+
+BUNDLED WITH
+   1.12.5

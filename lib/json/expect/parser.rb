@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'json/expect/buffer'
 
 module JSON
@@ -77,7 +78,7 @@ module JSON
       end
 
       def key
-        buffer = expect_char("\"")
+        expect_char("\"")
         @buffer.back
         until m = @buffer.scan(STRING)
           if @buffer.fetch.nil?
@@ -89,7 +90,7 @@ module JSON
       end
 
       def string
-        buffer = expect_char("\"")
+        expect_char("\"")
         @buffer.back
         until m = @buffer.scan(STRING)
           if @buffer.fetch.nil?
@@ -198,8 +199,7 @@ module JSON
       def null_or
         ch = @buffer.next_without_whitespace
         @buffer.back
-        case ch
-        when 'n'
+        if ch == 'n'
           null
         else
           yield

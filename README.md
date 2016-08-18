@@ -60,5 +60,131 @@ If get unexpected value, It failed.
 
 ```rb
 expect = JSON::Expect::Parser.new(%([10, 20, 30]))
-expect.array { p expect.string } #=> JSON::Expect::ParseError: expected "\"" but was "1"
+expect.array { p expect.string }
+#=> JSON::Expect::ParseError: expected "\"" but was "1"
+```
+
+## API
+
+### object
+
+```rb
+expect = JSON::Expect::Parser.new(%({"a": 10, "b": 20}))
+
+expect.object
+#=> #<Enumerator: #<JSON::Expect::Parser ...>>
+
+expect.object do
+  expect.key #=> "a", "b"
+  expect.integer #=> 10, 20
+end
+```
+
+### array
+
+```rb
+expect = JSON::Expect::Parser.new(%(["foo", "bar", "baz"]))
+
+expect.array
+#=> #<Enumerator: #<JSON::Expect::Parser ...>>
+
+expect.array do  
+  expect.string #=> "foo", "bar", "baz"
+end
+
+expect.rewind
+
+expect.array.map { expect.string }
+#=> ["foo", "bar", "baz"]
+```
+
+### integer
+
+```rb
+expect = JSON::Expect::Parser.new(%(100))
+expect.integer #=> 100
+```
+
+### number(alias float)
+
+```rb
+expect = JSON::Expect::Parser.new(%(1.1))
+expect.float #=> 1.1
+```
+
+### string
+
+```rb
+expect = JSON::Expect::Parser.new(%("foo"))
+expect.string #=> "foo"
+```
+
+### key
+
+Use in `object` then get object key string
+
+### boolean
+
+```rb
+expect = JSON::Expect::Parser.new(%("true"))
+expect.boolean #=> true
+```
+
+### null
+
+```rb
+expect = JSON::Expect::Parser.new(%("null"))
+expect.null #=> nil
+```
+
+### object_or_null
+
+```rb
+expect = JSON::Expect::Parser.new(%([{"a": 1}, null]))
+expect.array do
+  expect.object_or_null do
+    expect.key #=> "a"
+    expect.integer #=> 1
+  end
+end
+```
+
+### array_or_null
+
+```rb
+expect = JSON::Expect::Parser.new(%([[1, 2, 3], null]))
+expect.array do
+  expect.array_or_null do
+    expect.integer #=> 1, 2, 3
+  end
+end
+```
+
+### null_or
+
+```rb
+expect = JSON::Expect::Parser.new(%({"a": "foo", "b": null}))
+expect.object do
+  expect.key #=> "a", "b"
+  expect.null_or { expect.string } #=> "foo", nil
+end
+```
+
+### value(alias parse)
+
+```rb
+expect = JSON::Expect::Parser.new(%([[true, false], null, 1, "foo"]))
+expect.value
+#=> [[true, false], nil, 1.0, "foo"]
+```
+
+### rewind
+
+```rb
+expect = JSON::Expect::Parser.new(%("foo"))
+expect.string #=> "foo"
+expect.string #=> "foo"
+#=> JSON::Expect::ParseError: expected "\"" but was nil
+expect.rewind
+expect.string #=> "foo"
 ```

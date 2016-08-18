@@ -188,3 +188,15 @@ expect.string #=> "foo"
 expect.rewind
 expect.string #=> "foo"
 ```
+
+# Benchmark
+
+```
+8320.0kb
+38420.0kb
+ruby t.rb  0.19s user 0.06s system 98% cpu 0.257 total
+
+8124.0kb
+10732.0kb
+ruby j.rb  0.83s user 0.06s system 99% cpu 0.891 total
+```

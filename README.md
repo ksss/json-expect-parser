@@ -192,11 +192,20 @@ expect.string #=> "foo"
 # Benchmark
 
 ```
-8320.0kb
-38420.0kb
-ruby t.rb  0.19s user 0.06s system 98% cpu 0.257 total
+$ bundle ex benchmark/comparison.rb
+ruby v2.3.1
+Darwin Kernel Version 15.6.0: Thu Jun 23 18:25:34 PDT 2016; root:xnu-3248.60.10~1/RELEASE_X86_64
+2109KB json string
 
-8124.0kb
-10732.0kb
-ruby j.rb  0.83s user 0.06s system 99% cpu 0.891 total
+=== JSON::Ext::Parser ===
+time: 0.08309706707950681
+memory: 30164.0KB
+
+=== JSON::Pure::Parser ===
+time: 0.4895962669979781
+memory: 35684.0KB
+
+=== JSON::Expect::Parser ===
+time: 0.7294884130824357
+memory: 23568.0KB
 ```
